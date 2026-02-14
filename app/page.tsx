@@ -1,7 +1,6 @@
 import css from "./page.module.css";
 
 export default function Home() {
-  console.log("test");
   
   return (
     <main>
