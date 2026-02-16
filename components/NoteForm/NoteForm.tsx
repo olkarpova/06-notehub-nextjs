@@ -13,7 +13,7 @@ export interface NoteFormValues {
 
 interface NoteFormProps {
     onCancel: () => void;
-    onSubmit: (values: NoteFormValues) => void;
+    // onSubmit: (values: NoteFormValues) => void;
 }
 
 
@@ -24,7 +24,7 @@ const initialValues: NoteFormValues = {
 }
 
 
-export default function NoteForm({ onCancel, onSubmit }: NoteFormProps) {
+export default function NoteForm({ onCancel }: NoteFormProps) {
 
     const queryClient = useQueryClient();
 
@@ -38,18 +38,20 @@ export default function NoteForm({ onCancel, onSubmit }: NoteFormProps) {
             console.error("Error creating note:", error);
             alert("Failed to create note. Please try again.");
         },
-    })
+    });
     
-    const handleSubmit = (values: NoteFormValues, actions: FormikHelpers<NoteFormValues>) => {
-        if (onSubmit) {
-            onSubmit(values)
-        } else {
-            createNoteMutation.mutate(values)
-        }
-        
-        actions.resetForm();
-        actions.setSubmitting(false);
-    }
+    const handleSubmit = (
+        values: NoteFormValues,
+        actions: FormikHelpers<NoteFormValues>
+    ) => {
+        createNoteMutation.mutate(values, {
+            onSettled: () => {
+                actions.resetForm();
+                actions.setSubmitting(false);
+            },
+        });
+    }; 
+
     
     return (
         <Formik

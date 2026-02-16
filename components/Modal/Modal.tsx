@@ -49,5 +49,5 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
         <div className={css.modal}>{children}</div>
       </div>,
       modalRoot
-  );
+    );
 }

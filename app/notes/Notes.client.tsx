@@ -10,7 +10,7 @@ import NoteList from "../../components/NoteList/NoteList";
 import css from "./page.module.css";
 import { fetchNotes } from "@/lib/api";
 import SearchBox from "@/components/SearchBox/SearchBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
@@ -31,6 +31,10 @@ export default function NotesClient() {
   const [page, setPage] = useState(1);
   const perPage = 12;
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+  console.log("🟡 useEffect: isModalOpen =", isModalOpen);
+}, [isModalOpen]);
 
   const queryClient = useQueryClient();
 
@@ -83,7 +87,11 @@ export default function NotesClient() {
           />
         )}
 
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>
+        <button className={css.button} onClick={() => {
+          // console.log("Button clicked!")
+          setIsModalOpen(true);
+          console.log("🔵 isModalOpen set to TRUE");
+        }}>
           Create note +
         </button>
       </header>
@@ -93,15 +101,19 @@ export default function NotesClient() {
       {data && data.notes.length > 0 && <NoteList items={data.notes} />}
       {data && data?.notes.length === 0 && <p>No notes found</p>}
 
+      {/* console.log("CURRENT isModalOpen =", isModalOpen); */}
       {isModalOpen && (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <NoteForm
-            onSubmit={handleCreateNote}
-            onCancel={() => {
-              setIsModalOpen(false);
-            }}
-          />
-        </Modal>
+        <>
+          {/* {console.log("Modal rendering!")} */}
+          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <NoteForm
+              // onSubmit={handleCreateNote}
+              onCancel={() => {
+                setIsModalOpen(false);
+              }}
+            />
+          </Modal>
+        </>
       )}
     </div>
   );
