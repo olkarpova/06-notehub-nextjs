@@ -10,7 +10,7 @@ import NoteList from "../../components/NoteList/NoteList";
 import css from "./page.module.css";
 import { fetchNotes } from "@/lib/api";
 import SearchBox from "@/components/SearchBox/SearchBox";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
@@ -31,10 +31,6 @@ export default function NotesClient() {
   const [page, setPage] = useState(1);
   const perPage = 12;
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-  console.log("🟡 useEffect: isModalOpen =", isModalOpen);
-}, [isModalOpen]);
 
   const queryClient = useQueryClient();
 
@@ -107,7 +103,7 @@ export default function NotesClient() {
           {/* {console.log("Modal rendering!")} */}
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <NoteForm
-              // onSubmit={handleCreateNote}
+              onSubmit={handleCreateNote}
               onCancel={() => {
                 setIsModalOpen(false);
               }}
