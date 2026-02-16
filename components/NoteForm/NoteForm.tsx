@@ -45,6 +45,7 @@ export default function NoteForm({ onCancel, onSubmit }: NoteFormProps) {
         actions: FormikHelpers<NoteFormValues>
     ) => {
         onSubmit(values);
+
         actions.resetForm();
         actions.setSubmitting(false);
         // createNoteMutation.mutate(values, {
