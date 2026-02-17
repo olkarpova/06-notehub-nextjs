@@ -2,9 +2,7 @@
 
 import {
   useQuery,
-  keepPreviousData,
-  useMutation,
-  useQueryClient,
+  keepPreviousData
 } from "@tanstack/react-query";
 import NoteList from "../../components/NoteList/NoteList";
 import css from "./page.module.css";
@@ -15,16 +13,16 @@ import { useDebouncedCallback } from "use-debounce";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 
-import { createNote } from "@/lib/api";
-import { NoteTag } from "@/types/note";
+// import { createNote } from "@/lib/api";
+// import { NoteTag } from "@/types/note";
 
 import Pagination from "@/components/Pagination/Pagination";
 
-type NoteFormValues = {
-  title: string;
-  content: string;
-  tag: NoteTag;
-};
+// type NoteFormValues = {
+//   title: string;
+//   content: string;
+//   tag: NoteTag;
+// };
 
 export default function NotesClient() {
   const [search, setSearch] = useState("");
@@ -32,7 +30,7 @@ export default function NotesClient() {
   const perPage = 12;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["notes", page, search, perPage],
@@ -41,22 +39,22 @@ export default function NotesClient() {
   });
 
   // Mutation для створення нотатки==============
-  const createNoteMutation = useMutation({
-    mutationFn: createNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-      setIsModalOpen(false);
-    },
-    onError: (error) => {
-      console.error("Error creating note:", error);
-      alert("Failed to create note. Please try again.");
-    },
-  });
+  // const createNoteMutation = useMutation({
+  //   mutationFn: createNote,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["notes"] });
+  //     setIsModalOpen(false);
+  //   },
+  //   onError: (error) => {
+  //     console.error("Error creating note:", error);
+  //     alert("Failed to create note. Please try again.");
+  //   },
+  // });
   //=============================================
 
-  const handleCreateNote = (values: NoteFormValues) => {
-    createNoteMutation.mutate(values);
-  };
+  // const handleCreateNote = (values: NoteFormValues) => {
+  //   createNoteMutation.mutate(values);
+  // };
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
     setSearch(value);
@@ -103,7 +101,7 @@ export default function NotesClient() {
           {/* {console.log("Modal rendering!")} */}
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <NoteForm
-              onSubmit={handleCreateNote}
+              // onSubmit={handleCreateNote}
               onCancel={() => {
                 setIsModalOpen(false);
               }}

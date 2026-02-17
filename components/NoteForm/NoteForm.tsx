@@ -13,7 +13,7 @@ export interface NoteFormValues {
 
 interface NoteFormProps {
     onCancel: () => void;
-    onSubmit: (values: NoteFormValues) => void;
+    // onSubmit: (values: NoteFormValues) => void;
 }
 
 
@@ -24,36 +24,37 @@ const initialValues: NoteFormValues = {
 }
 
 
-export default function NoteForm({ onCancel, onSubmit }: NoteFormProps) {
+export default function NoteForm({ onCancel }: NoteFormProps) {
 
-    // const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-    // const createNoteMutation = useMutation({
-    //     mutationFn: createNote,
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries({ queryKey: ['notes'] });
-    //         onCancel();
-    //     },
-    //     onError: (error) => {
-    //         console.error("Error creating note:", error);
-    //         alert("Failed to create note. Please try again.");
-    //     },
-    // });
+    const createNoteMutation = useMutation({
+        mutationFn: createNote,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['notes'] });
+            onCancel();
+        },
+        onError: (error) => {
+            console.error("Error creating note:", error);
+            alert("Failed to create note. Please try again.");
+        },
+    });
     
     const handleSubmit = (
         values: NoteFormValues,
         actions: FormikHelpers<NoteFormValues>
     ) => {
-        onSubmit(values);
+        // onSubmit(values);
 
-        actions.resetForm();
-        actions.setSubmitting(false);
-        // createNoteMutation.mutate(values, {
-        //     onSettled: () => {
-        //         actions.resetForm();
-        //         actions.setSubmitting(false);
-        //     },
-        // });
+        // actions.resetForm();
+        // actions.setSubmitting(false);
+        createNoteMutation.mutate(values, {
+
+            onSettled: () => {
+                actions.resetForm();
+                actions.setSubmitting(false);
+            },
+        });
     }; 
 
     
